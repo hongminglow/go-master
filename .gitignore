@@ -1,0 +1,15 @@
+# Binaries and build output
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+bin/
+vendor/
+build/
+dist/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
