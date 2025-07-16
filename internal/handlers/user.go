@@ -9,6 +9,14 @@ import (
 	"time"
 )
 
+// Add swagger comments to handlers
+// @Summary Get all users
+// @Description Get all users with their roles
+// @Tags users
+// @Accept json
+// @Produce json
+// @Success 200 {object} api.APIResponse
+// @Router /api/users [get]
 func UserHandler(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
 	if err := database.DB.Preload("Role").Find(&users).Error; err != nil {

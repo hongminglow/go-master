@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
+	"backend/config"
 	"backend/internal/database"
 	"backend/internal/handlers"
 
@@ -21,6 +21,9 @@ func main() {
 		log.Println("No .env file found")
 	}
 
+	// Load config
+	cfg := config.Load()
+
 	// Connect to database
 	database.Connect()
 
@@ -34,14 +37,14 @@ func main() {
 
 	// CORS setup
 	corsHandler := gorillahandlers.CORS(
-		gorillahandlers.AllowedOrigins([]string{"http://localhost:5173"}),
+		gorillahandlers.AllowedOrigins(cfg.Server.AllowedOrigins),
 		gorillahandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}),
 		gorillahandlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 		gorillahandlers.AllowCredentials(),
 	)(router)
 
 	// Start server
-	port := os.Getenv("PORT")
+	port := cfg.Server.Port
 	if port == "" {
 		port = "3001"
 	}
@@ -54,11 +57,15 @@ func main() {
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message": "Go Backend is running!"}`))
+	if _, err := w.Write([]byte(`{"message": "Go Backend is running!"}`)); err != nil {
+		log.Printf("failed to write response: %v", err)
+	}
 }
 
 func healthHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"status": "healthy", "database": "connected"}`))
+	if _, err := w.Write([]byte(`{"status": "healthy", "database": "connected"}`)); err != nil {
+		log.Printf("failed to write response: %v", err)
+	}
 }
