@@ -8,6 +8,7 @@ import (
 	"backend/config"
 	"backend/internal/database"
 	"backend/internal/handlers"
+	"backend/internal/websocket"
 
 	gorillahandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -30,10 +31,20 @@ func main() {
 	// Create router
 	router := mux.NewRouter()
 
+	//Setup scheduler
+	// scheduler.Start()
+
+	// Setup WebSocket handler
+	go websocket.HandleMessages()
+
+	// Start WebSocket pinger
+	websocket.StartPinger()
+
 	// Routes
 	router.HandleFunc("/", homeHandler).Methods("GET")
 	router.HandleFunc("/api/health", healthHandler).Methods("GET")
 	router.HandleFunc("/api/users", handlers.UserHandler).Methods("GET")
+	router.HandleFunc("/ws/testing", websocket.HandleWebSocket)
 
 	// CORS setup
 	corsHandler := gorillahandlers.CORS(
