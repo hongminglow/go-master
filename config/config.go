@@ -40,8 +40,10 @@ type RedisConfig struct {
 	DB       int
 }
 
+var GlobalConfig *Config
+
 func Load() *Config {
-	return &Config{
+	GlobalConfig = &Config{
 		Server: ServerConfig{
 			Port:           getEnvWithDefault("PORT", "8080"),
 			Environment:    getEnvWithDefault("ENVIRONMENT", "development"),
@@ -65,6 +67,7 @@ func Load() *Config {
 			DB:       getEnvAsInt("REDIS_DB", 0),
 		},
 	}
+	return GlobalConfig
 }
 
 // Helper function to get int from environment variable

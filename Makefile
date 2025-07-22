@@ -20,15 +20,15 @@ clean:
 
 dev:
 	cp .env.development .env
-    go run cmd/api/main.go
+	go run cmd/api/main.go
 
 staging:
-    cp .env.staging .env
-    go run cmd/api/main.go
+	cp .env.staging .env
+	go run cmd/api/main.go
 
 prod:
-    cp .env.production .env
-    go run cmd/api/main.go
+	cp .env.production .env
+	go run cmd/api/main.go
 
 install:
 	go mod tidy

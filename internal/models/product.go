@@ -17,7 +17,8 @@ type Product struct {
 	Description string           `json:"description" gorm:"size:300;not null"`
 	Price       float64          `json:"price" gorm:"type:numeric(10,2);not null"`
 	Quantity    uint32           `json:"quantity" gorm:"not null"`
-	Image       string           `json:"image" gorm:"type:text"`
+	Image       []byte           `json:"-" gorm:"type:bytea"`
+	ImageType   string           `json:"image_type" gorm:"size:50"`
 	Variants    []ProductVariant `json:"variants" gorm:"foreignKey:ProductID"`
 	Categories  []Category       `json:"categories" gorm:"many2many:product_categories;joinForeignKey:ProductID;JoinReferences:CategoryID"`
 }

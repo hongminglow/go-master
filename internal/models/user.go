@@ -17,7 +17,7 @@ type User struct {
 	BOD      string `json:"bod" gorm:"size:50;not null"`
 	Email    string `json:"email" gorm:"size:50;not null"`
 	Address  string `json:"address" gorm:"size:200"`
-	Password string `json:"-" gorm:"size:50;not null"`
+	Password string `json:"-" gorm:"size:100;not null"`
 	RoleID   uint32 `json:"role_id"`
 	Role     Role   `json:"role" gorm:"foreignKey:RoleID;references:ID"`
 }

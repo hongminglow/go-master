@@ -4,12 +4,15 @@ import (
 	"backend/api"
 	"backend/internal/database"
 	"backend/internal/models"
+	"backend/utils"
 	"encoding/json"
 	"net/http"
 	"time"
+
+	"github.com/gorilla/mux"
+	"gorm.io/gorm"
 )
 
-// Add swagger comments to handlers
 // @Summary Get all users
 // @Description Get all users with their roles
 // @Tags users
@@ -17,9 +20,17 @@ import (
 // @Produce json
 // @Success 200 {object} api.APIResponse
 // @Router /api/users [get]
-func UserHandler(w http.ResponseWriter, r *http.Request) {
+type UserHandler struct {
+	db *gorm.DB
+}
+
+func NewUserHandler(db *gorm.DB) *UserHandler {
+	return &UserHandler{db: db}
+}
+
+func (user *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
-	if err := database.DB.Preload("Role").Find(&users).Error; err != nil {
+	if err := user.db.Preload("Role").Find(&users).Error; err != nil {
 		resp := api.APIResponse{
 			Data:      nil,
 			Message:   "Failed to fetch users",
@@ -29,7 +40,7 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		if err := json.NewEncoder(w).Encode(resp); err != nil {
-			http.Error(w, "Failed to encode error response", http.StatusInternalServerError)
+			utils.ErrorResponse(w, http.StatusInternalServerError, "Failed to encode error response")
 			return
 		}
 		return
@@ -42,7 +53,13 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
-		http.Error(w, "Failed to encode error response", http.StatusInternalServerError)
+		utils.ErrorResponse(w, http.StatusInternalServerError, "Failed to encode error response")
 		return
 	}
+}
+
+func RegisterUserRoutes(router *mux.Router) {
+	db := database.DB
+	userHandler := NewUserHandler(db)
+	router.HandleFunc("/api/users", userHandler.GetUsers).Methods("GET")
 }

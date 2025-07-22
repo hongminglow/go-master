@@ -14,7 +14,7 @@ import (
 
 // JWT Claims structure
 type Claims struct {
-	UserID   uint   `json:"user_id"`
+	UserID   uint32 `json:"user_id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 	jwt.RegisteredClaims
@@ -34,6 +34,13 @@ func SetJWTSecret(secret string) {
 
 func AuthMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		// Skip authentication for public routes
+		if r.URL.Path == "/api/login" || r.URL.Path == "/api/register" {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		token := extractToken(r)
 		if token == "" {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
@@ -95,7 +102,7 @@ func validateToken(tokenString string) (*Claims, error) {
 }
 
 // GenerateToken generates a new JWT token for user
-func GenerateToken(userID uint, username, email string, expiresInHours int) (string, error) {
+func GenerateToken(userID uint32, username, email string, expiresInHours int) (string, error) {
 	if len(jwtSecret) == 0 {
 		return "", errors.New("JWT secret not set")
 	}

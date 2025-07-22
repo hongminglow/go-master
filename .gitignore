@@ -9,6 +9,7 @@ vendor/
 build/
 dist/
 tmp/
+server.log
 
 # Environment files
 .env

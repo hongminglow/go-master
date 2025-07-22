@@ -1,18 +1,28 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"backend/config"
+	_ "backend/docs"
+	"backend/internal/cache"
 	"backend/internal/database"
 	"backend/internal/handlers"
+	"backend/internal/middleware"
+	"backend/internal/mqtt"
 	"backend/internal/websocket"
 
 	gorillahandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 func main() {
@@ -28,8 +38,24 @@ func main() {
 	// Connect to database
 	database.Connect()
 
+	// Initialize Redis
+	cache.InitRedis()
+
+	// Initialize MQTT
+	mqtt.Connect()
+
+	// Log to file
+	logFile, err := os.OpenFile("server.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Failed to open log file: %v", err)
+	}
+	log.SetOutput(logFile)
+
 	// Create router
 	router := mux.NewRouter()
+
+	// Set JWT secret for middleware
+	middleware.SetJWTSecret(cfg.JWT.SecretKey)
 
 	//Setup scheduler
 	// scheduler.Start()
@@ -43,8 +69,25 @@ func main() {
 	// Routes
 	router.HandleFunc("/", homeHandler).Methods("GET")
 	router.HandleFunc("/api/health", healthHandler).Methods("GET")
-	router.HandleFunc("/api/users", handlers.UserHandler).Methods("GET")
+	// Socket route
 	router.HandleFunc("/ws/testing", websocket.HandleWebSocket)
+	// Swagger route
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	router.Use(middleware.AuthMiddleware)
+	router.Use(middleware.LoggingMiddleware)
+	router.Use(middleware.CacheMiddleware)
+
+	// Register auth routes
+	handlers.RegisterAuthRoutes(router)
+
+	// Register user routes
+	handlers.RegisterUserRoutes(router)
+
+	//Register category routes
+	handlers.RegisterCategoryRoutes(router)
+
+	// Register product routes
+	handlers.RegisterProductRoutes(router)
 
 	// CORS setup
 	corsHandler := gorillahandlers.CORS(
@@ -61,7 +104,40 @@ func main() {
 	}
 
 	fmt.Printf("🚀 Server running on http://localhost:%s\n", port)
-	log.Fatal(http.ListenAndServe(":"+port, corsHandler))
+
+	// Create HTTP server
+	server := &http.Server{
+		Addr:    ":" + port,
+		Handler: corsHandler,
+	}
+
+	// Channel to listen for interrupt signal
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	// Start server in a goroutine
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server failed to start: %v", err)
+		}
+	}()
+
+	// Wait for interrupt signal
+	<-stop
+	log.Println("Shutting down server...")
+
+	// Graceful shutdown
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Disconnect MQTT client
+	mqtt.Disconnect()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+
+	log.Println("Server exited")
 }
 
 // Route handlers
