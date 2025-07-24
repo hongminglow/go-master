@@ -4,9 +4,9 @@ import (
 	"backend/config"
 	"backend/internal/database"
 	"backend/internal/dto"
+	"backend/internal/messaging"
 	"backend/internal/middleware"
 	"backend/internal/models"
-	"backend/internal/mqtt"
 	"backend/utils"
 	"encoding/json"
 	"log"
@@ -76,18 +76,30 @@ func (auth *AuthHandler) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Publish login event to MQTT
+	// Publish login event via configured messaging system (Kafka/MQTT/gRPC)
+	log.Println("🔄 Starting messaging event publishing process...")
+
 	subject := "Login Notification"
 	body := "You have successfully logged in at " + time.Now().Format(time.RFC3339)
 	eventPayload := "hongminglow1212@gmail.com" + "|" + subject + "|" + body
 
-	log.Printf("Publishing MQTT event to topic %s: %s", os.Getenv("MQTT_TOPIC"), eventPayload)
-
-	if err := mqtt.PublishEvent(os.Getenv("MQTT_TOPIC"), eventPayload); err != nil {
-		// Log error but don't fail the login (silent failure)
-		log.Println("Failed to publish MQTT event:", err)
-		// You can add proper logging here if needed
+	// For Kafka/MQTT, we use topic. For gRPC, topic is ignored but kept for consistency
+	topic := os.Getenv("KAFKA_TOPIC") // fallback topic for Kafka/MQTT
+	if topic == "" {
+		topic = "mail-notify"
 	}
+
+	log.Printf("� Event payload: %s", eventPayload)
+	log.Printf("🚀 Publishing event via messaging system to topic %s", topic)
+
+	go func() {
+		err = messaging.SendMessage(topic, eventPayload)
+		if err != nil {
+			log.Printf("❌ Failed to send message via messaging system: %v", err)
+		} else {
+			log.Println("✅ Message sent successfully via messaging system!")
+		}
+	}()
 
 	resp := map[string]string{"token": tokenString}
 	w.Header().Set("Content-Type", "application/json")

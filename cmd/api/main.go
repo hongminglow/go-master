@@ -1,6 +1,7 @@
 package main
 
 import (
+	"backend/internal/logger"
 	"context"
 	"fmt"
 	"log"
@@ -15,8 +16,8 @@ import (
 	"backend/internal/cache"
 	"backend/internal/database"
 	"backend/internal/handlers"
+	"backend/internal/messaging"
 	"backend/internal/middleware"
-	"backend/internal/mqtt"
 	"backend/internal/websocket"
 
 	gorillahandlers "github.com/gorilla/handlers"
@@ -26,6 +27,9 @@ import (
 )
 
 func main() {
+	logger.InitFileLogger()
+	log.Println("✅ Logger initialized - logging to daily file")
+
 	// Load environment variables
 	err := godotenv.Load()
 	if err != nil {
@@ -41,15 +45,8 @@ func main() {
 	// Initialize Redis
 	cache.InitRedis()
 
-	// Initialize MQTT
-	mqtt.Connect()
-
-	// Log to file
-	logFile, err := os.OpenFile("server.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
-	if err != nil {
-		log.Fatalf("Failed to open log file: %v", err)
-	}
-	log.SetOutput(logFile)
+	// Initialize Messaging (Kafka/MQTT/gRPC based on config)
+	messaging.InitializeMessaging()
 
 	// Create router
 	router := mux.NewRouter()
@@ -130,8 +127,11 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	// Disconnect MQTT client
-	mqtt.Disconnect()
+	// Disconnect messaging client
+	messaging.DisconnectMessaging()
+
+	// Close log file
+	logger.CloseLogFile()
 
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatalf("Server forced to shutdown: %v", err)

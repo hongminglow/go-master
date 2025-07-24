@@ -6,6 +6,8 @@ services:
     build: .
     ports:
       - "3001:3001"
+    env_file:
+      - .env
     environment:
       - ENVIRONMENT=development
     depends_on:
@@ -13,6 +15,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+      # kafka:
+      #   condition: service_started
 
   postgres:
     image: postgres:15
@@ -41,6 +45,29 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
+  # zookeeper:
+  #   image: bitnami/zookeeper:3.9
+  #   container_name: zookeeper
+  #   ports:
+  #     - "2181:2181"
+  #   environment:
+  #     - ALLOW_ANONYMOUS_LOGIN=yes
+
+  # kafka:
+  #   image: bitnami/kafka:3.7
+  #   container_name: kafka
+  #   ports:
+  #     - "9092:9092"
+  #     - "9093:9093"
+  #   environment:
+  #     - KAFKA_BROKER_ID=1
+  #     - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:9093
+  #     - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9093
+  #     - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+  #     - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - ALLOW_PLAINTEXT_LISTENER=yes
+  #   depends_on:
+  #     - zookeeper
 
 volumes:
   postgres_data:

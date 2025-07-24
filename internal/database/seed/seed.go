@@ -14,7 +14,7 @@ type Seeder interface {
 func RunAll(db *gorm.DB) {
 	seeders := []Seeder{
 		&RoleSeeder{},
-		&UserSeeder{},
+		// &UserSeeder{},
 	}
 
 	for _, seeder := range seeders {
