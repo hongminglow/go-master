@@ -19,26 +19,26 @@ export function ComparisonCard({ data }: Props) {
       </h3>
 
       <div className="flex flex-col lg:flex-row gap-4 items-stretch justify-center">
-        <div className="flex-1 min-w-0 bg-[var(--color-code)] p-4 rounded-lg border border-[var(--color-secondary)]">
-          <div className="text-sm opacity-60 text-gray-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2">
-            <XCircle className="w-4 h-4 text-rose-500/50" />
+        <div className="flex-1 min-w-0 bg-rose-950/85 p-4 rounded-lg border border-rose-900 opacity-85">
+          <div className="text-sm text-rose-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2 opacity-90">
+            <XCircle className="w-4 h-4 text-rose-500" />
             {data.before.title || t.before}
           </div>
-          <pre className="text-sm font-mono text-gray-400 overflow-x-auto opacity-80 no-scrollbar">
+          <pre className="text-sm font-mono text-rose-50 overflow-x-auto no-scrollbar">
             {data.before.code}
           </pre>
         </div>
 
         <div className="flex items-center justify-center lg:py-0 py-2">
-          <ArrowRight className="w-8 h-8 text-[var(--color-cta)] lg:rotate-0 rotate-90 opacity-50" />
+          <ArrowRight className="w-8 h-8 text-[var(--color-cta)] lg:rotate-0 rotate-90 opacity-40" />
         </div>
 
-        <div className="flex-1 min-w-0 bg-[var(--color-code)] p-4 rounded-lg border border-green-900/50">
-          <div className="text-sm text-green-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-green-400" />
+        <div className="flex-1 min-w-0 bg-emerald-950/85 p-4 rounded-lg border border-emerald-800">
+          <div className="text-sm text-emerald-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2 opacity-90">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             {data.after.title || t.after}
           </div>
-          <pre className="text-sm font-mono text-green-100 overflow-x-auto no-scrollbar">
+          <pre className="text-sm font-mono text-emerald-50 overflow-x-auto no-scrollbar">
             {data.after.code}
           </pre>
         </div>

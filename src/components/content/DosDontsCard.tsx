@@ -14,12 +14,12 @@ export function DosDontsCard({ data }: Props) {
 
   return (
     <CardWrapper>
-      <h3 className="text-xl font-bold mb-6 text-center border-b border-[var(--color-secondary)] pb-2 text-[var(--color-text)] opacity-90">
+      <h3 className="text-xl font-bold mb-6 text-center border-b border-[var(--color-secondary)] pb-2 text-[var(--color-text)] ">
         {data.title}
       </h3>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="rounded-xl border border-emerald-800 bg-emerald-950/40 p-4">
+        <div className="rounded-xl border border-emerald-800 bg-emerald-950/85 p-4">
           <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-emerald-300">
             <CheckCircle2 className="w-5 h-5" />
             {t.dos}
@@ -35,17 +35,17 @@ export function DosDontsCard({ data }: Props) {
           </ul>
         </div>
 
-        <div className="rounded-xl border border-rose-800 bg-rose-950/40 p-4">
-          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-rose-500/80">
+        <div className="rounded-xl border border-rose-900 bg-rose-950/85 p-4 opacity-85">
+          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-rose-500">
             <XCircle className="w-5 h-5" />
             {t.donts}
           </h4>
 
           <ul className="space-y-3">
             {data.donts.map((item, idx) => (
-              <li key={idx} className="flex items-start gap-2 opacity-80">
-                <span className="mt-1 text-rose-500/80">•</span>
-                <span className="text-rose-100/80">{item}</span>
+              <li key={idx} className="flex items-start gap-2">
+                <span className="mt-1 text-rose-500">•</span>
+                <span className="text-rose-50">{item}</span>
               </li>
             ))}
           </ul>

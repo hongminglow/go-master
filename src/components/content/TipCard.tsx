@@ -15,9 +15,9 @@ export function TipCard({ data }: Props) {
   };
 
   const bgMap = {
-    info: 'bg-blue-900/20 border-blue-900/50',
-    danger: 'bg-[var(--color-secondary)] border-[var(--color-cta)]',
-    success: 'bg-green-900/20 border-green-900/50',
+    info: 'bg-blue-700/20 border-blue-600/30',
+    danger: 'bg-red-700/20 border-red-600/30',
+    success: 'bg-green-700/20 border-green-600/30',
   };
 
   return (
