@@ -8,7 +8,7 @@ import { WorkflowCard } from "./WorkflowCard";
 import { CodeSnippet } from "./CodeSnippet";
 import { ComparisonCard } from "./ComparisonCard";
 import { DosDontsCard } from "./DosDontsCard";
-
+import { TableCard } from "./TableCard";
 interface Props {
   sections: ContentSection[];
 }
@@ -35,6 +35,8 @@ export function ContentRenderer({ sections }: Props) {
             return <ComparisonCard key={idx} data={section.data} />;
           case "dos-donts":
             return <DosDontsCard key={idx} data={section.data} />;
+          case "table":
+            return <TableCard key={idx} data={section.data} />;
           default:
             return (
               <div
