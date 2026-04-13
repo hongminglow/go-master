@@ -6,6 +6,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { translations } from "@/i18n/translations";
 import { cn } from "@/utils/cn";
+import { isFuzzyMatch } from "@/utils/fuzzy";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   BookOpen,
@@ -36,11 +37,9 @@ export function SearchModal({ isOpen, onClose }: Props) {
       return allTopics[language];
     }
 
-    const normalizedQueryParts = normalizedQuery.split(" ").filter(Boolean);
-
     return allTopics[language].filter((topic) => {
-      const searchableText = `${topic.name} ${(topic.tags || []).join(" ")}`.toLowerCase();
-      return normalizedQueryParts.every(part => searchableText.includes(part));
+      const searchableText = `${topic.name} ${(topic.tags || []).join(" ")}`;
+      return isFuzzyMatch(debouncedQuery, searchableText);
     });
   }, [debouncedQuery, language]);
 

@@ -65,7 +65,7 @@ export function Sidebar({ onOpenSearch }: Props) {
             title={sidebarT.homeLabel}
             aria-label={sidebarT.homeLabel}
           >
-            <img src="./favicon.svg" alt="app-logo" className="size-8 " />
+            <img src="/favicon.svg" alt="app-logo" className="h-8 w-8 shrink-0" />
             <span className="truncate">{appT.name}</span>
           </Link>
         ) : (
@@ -75,7 +75,7 @@ export function Sidebar({ onOpenSearch }: Props) {
             title={sidebarT.homeLabel}
             aria-label={sidebarT.homeLabel}
           >
-            <Hexagon className="h-8 w-8" />
+            <img src="/favicon.svg" alt="app-logo" className="h-8 w-8" />
           </Link>
         )}
 
@@ -131,6 +131,9 @@ export function Sidebar({ onOpenSearch }: Props) {
           const categoryTopics = allTopics[language].filter(
             (topic) => topic.categoryId === category.id,
           );
+          const isActiveCategory = categoryTopics.some(
+            (topic) => location.pathname === `/topic/${topic.id}`
+          );
 
           return (
             <div key={category.id} className="space-y-2">
@@ -146,8 +149,9 @@ export function Sidebar({ onOpenSearch }: Props) {
                   }
                 }}
                 className={cn(
-                  "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider text-[var(--color-text)]/60 transition-colors hover:text-[var(--color-text)]",
+                  "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[var(--color-text)]",
                   isCollapsed && "justify-center",
+                  isCollapsed && isActiveCategory ? "text-[var(--color-cta)]" : "text-[var(--color-text)]/60"
                 )}
                 title={category.name}
               >
