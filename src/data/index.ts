@@ -14,6 +14,11 @@ import { testingEn, testingZh } from './topics/testing';
 import { modulesPackagesEn, modulesPackagesZh } from './topics/modules-packages';
 import { performanceEn, performanceZh } from './topics/performance-tips';
 import { httpServerEn, httpServerZh } from './topics/http-server';
+import { goroutineLeaksEn, goroutineLeaksZh } from './topics/goroutine-leaks';
+import { nilInterfaceTrapEn, nilInterfaceTrapZh } from './topics/nil-interface-trap';
+import { stringsBytesRunesEn, stringsBytesRunesZh } from './topics/strings-bytes-runes';
+import { forRangeTrapEn, forRangeTrapZh } from './topics/for-range-trap';
+import { goSchedulerEn, goSchedulerZh } from './topics/go-scheduler';
 import type { ContentNode } from './types';
 import type { Language } from '@/store/useLanguageStore';
 
@@ -42,6 +47,13 @@ export const allTopics: Record<Language, ContentNode[]> = {
     testingEn,
     performanceEn,
     httpServerEn,
+    nilInterfaceTrapEn,
+    forRangeTrapEn,
+    goSchedulerEn,
+    // Concurrency (extra)
+    goroutineLeaksEn,
+    // Basics (extra)
+    stringsBytesRunesEn,
   ],
   zh: [
     // Go 入门
@@ -64,5 +76,12 @@ export const allTopics: Record<Language, ContentNode[]> = {
     testingZh,
     performanceZh,
     httpServerZh,
+    nilInterfaceTrapZh,
+    forRangeTrapZh,
+    goSchedulerZh,
+    // 并发（补充）
+    goroutineLeaksZh,
+    // 基础（补充）
+    stringsBytesRunesZh,
   ],
 };
