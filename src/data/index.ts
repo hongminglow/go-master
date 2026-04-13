@@ -19,6 +19,9 @@ import { nilInterfaceTrapEn, nilInterfaceTrapZh } from './topics/nil-interface-t
 import { stringsBytesRunesEn, stringsBytesRunesZh } from './topics/strings-bytes-runes';
 import { forRangeTrapEn, forRangeTrapZh } from './topics/for-range-trap';
 import { goSchedulerEn, goSchedulerZh } from './topics/go-scheduler';
+import { deferDeepDiveEn, deferDeepDiveZh } from './topics/defer-deep-dive';
+import { functionalOptionsEn, functionalOptionsZh } from './topics/functional-options';
+import { mapsDeepDiveEn, mapsDeepDiveZh } from './topics/maps-deep-dive';
 import type { ContentNode } from './types';
 import type { Language } from '@/store/useLanguageStore';
 
@@ -54,6 +57,10 @@ export const allTopics: Record<Language, ContentNode[]> = {
     goroutineLeaksEn,
     // Basics (extra)
     stringsBytesRunesEn,
+    // Patterns & Internals
+    deferDeepDiveEn,
+    functionalOptionsEn,
+    mapsDeepDiveEn,
   ],
   zh: [
     // Go 入门
@@ -83,5 +90,9 @@ export const allTopics: Record<Language, ContentNode[]> = {
     goroutineLeaksZh,
     // 基础（补充）
     stringsBytesRunesZh,
+    // 模式与内部原理
+    deferDeepDiveZh,
+    functionalOptionsZh,
+    mapsDeepDiveZh,
   ],
 };
