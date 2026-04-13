@@ -20,10 +20,11 @@ export function ComparisonCard({ data }: Props) {
 
       <div className="flex flex-col lg:flex-row gap-4 items-stretch justify-center">
         <div className="flex-1 bg-[var(--color-code)] p-4 rounded-lg border border-[var(--color-secondary)]">
-          <div className="text-sm opacity-50 font-bold mb-2 uppercase tracking-wider">
+          <div className="text-sm opacity-60 text-gray-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2">
+            <XCircle className="w-4 h-4 text-rose-500/50" />
             {data.before.title || t.before}
           </div>
-          <pre className="text-sm font-mono text-gray-400 overflow-x-auto">
+          <pre className="text-sm font-mono text-gray-400 overflow-x-auto opacity-80">
             {data.before.code}
           </pre>
         </div>
@@ -33,10 +34,11 @@ export function ComparisonCard({ data }: Props) {
         </div>
 
         <div className="flex-1 bg-[var(--color-code)] p-4 rounded-lg border border-green-900/50">
-          <div className="text-sm text-green-400 font-bold mb-2 uppercase tracking-wider">
+          <div className="text-sm text-green-300 font-bold mb-2 uppercase tracking-wider flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-green-400" />
             {data.after.title || t.after}
           </div>
-          <pre className="text-sm font-mono text-green-300 overflow-x-auto">
+          <pre className="text-sm font-mono text-green-100 overflow-x-auto">
             {data.after.code}
           </pre>
         </div>
