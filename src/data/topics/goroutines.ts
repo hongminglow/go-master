@@ -4,6 +4,7 @@ export const goroutinesEn: ContentNode = {
   id: 'goroutines',
   name: 'Goroutines & Channels',
   categoryId: 'concurrency',
+  tags: ['concurrency', 'threads', 'race condition', 'goroutine', 'performance'],
   content: {
     sections: [
       {
@@ -64,6 +65,7 @@ export const goroutinesZh: ContentNode = {
   id: 'goroutines',
   name: 'Goroutines 与 通道 (Channels)',
   categoryId: 'concurrency',
+  tags: ['并发', '线程', '数据竞争', '多线程', '性能', '协程'],
   content: {
     sections: [
       {

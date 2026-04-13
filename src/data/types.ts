@@ -2,6 +2,7 @@ export interface ContentNode {
   id: string;
   name: string;
   categoryId: string;
+  tags?: string[];
   content: {
     sections: ContentSection[];
   };

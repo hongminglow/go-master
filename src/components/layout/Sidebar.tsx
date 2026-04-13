@@ -29,8 +29,20 @@ interface Props {
 
 export function Sidebar({ onOpenSearch }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
   const location = useLocation();
   const { language, toggleLanguage } = useLanguageStore();
+
+  const toggleCategory = (id: string) => {
+    setOpenCategories((prev) => ({
+      ...prev,
+      [id]: prev[id] === undefined ? false : !prev[id], // Default true means if undefined, we want it false when toggling
+    }));
+  };
+
+  const isCategoryOpen = (id: string) => {
+    return openCategories[id] ?? true; // Default to open
+  };
 
   const appT = translations[language].app;
   const sidebarT = translations[language].sidebar;
@@ -120,8 +132,9 @@ export function Sidebar({ onOpenSearch }: Props) {
           return (
             <div key={category.id} className="space-y-2">
               <div
+                onClick={() => toggleCategory(category.id)}
                 className={cn(
-                  "flex items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider text-[var(--color-text)]/60",
+                  "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider text-[var(--color-text)]/60 transition-colors hover:text-[var(--color-text)]",
                   isCollapsed && "justify-center",
                 )}
                 title={category.name}
@@ -139,7 +152,7 @@ export function Sidebar({ onOpenSearch }: Props) {
                 )}
               </div>
 
-              {!isCollapsed && (
+              {!isCollapsed && isCategoryOpen(category.id) && (
                 <div className="space-y-1 pl-4">
                   {categoryTopics.map((topic) => {
                     const isActive = location.pathname === `/topic/${topic.id}`;

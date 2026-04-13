@@ -45,11 +45,6 @@ export function AppLayout() {
     return () => window.removeEventListener("keydown", handleGlobalKeyDown);
   }, []);
 
-  useEffect(() => {
-    document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
-    document.title = localizedTitle;
-  }, [language, localizedTitle]);
-
   return (
     <div className="flex min-h-screen bg-[var(--color-background)] text-[var(--color-text)] selection:bg-[var(--color-cta)]/30">
       <Sidebar onOpenSearch={() => setIsSearchOpen(true)} />

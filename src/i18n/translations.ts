@@ -54,12 +54,12 @@ export type TranslationMessages = {
 export const translations: Record<"en" | "zh", TranslationMessages> = {
   en: {
     app: {
-      name: "GoMaster",
-      defaultTitle: "GoMaster - The Golang Knowledge Platform",
+      name: "Go Master",
+      defaultTitle: "Go Master - The Golang Knowledge Platform",
       shortcutLabel: "Cmd/Ctrl+K",
     },
     sidebar: {
-      homeLabel: "GoMaster home",
+      homeLabel: "Go Master home",
       search: "Search...",
       shortcutHint: "Cmd/Ctrl+K",
       collapse: "Collapse sidebar",
@@ -94,7 +94,7 @@ export const translations: Record<"en" | "zh", TranslationMessages> = {
           desc: "Strong static typing helps surface mistakes early, long before they reach production.",
         },
       },
-      pageTitle: "GoMaster - Learn Go from Zero to Concurrency Mastery",
+      pageTitle: "Go Master - Learn Go from Zero to Concurrency Mastery",
     },
     search: {
       placeholder: "Search topics, syntax, or tips...",
@@ -105,7 +105,7 @@ export const translations: Record<"en" | "zh", TranslationMessages> = {
     topic: {
       endOf: "End of",
       unknownCategory: "Unknown Category",
-      pageTitle: (topicName: string) => `${topicName} - GoMaster`,
+      pageTitle: (topicName: string) => `${topicName} - Go Master`,
     },
     content: {
       copyCode: "Copy code",
@@ -119,12 +119,12 @@ export const translations: Record<"en" | "zh", TranslationMessages> = {
   },
   zh: {
     app: {
-      name: "GoMaster",
-      defaultTitle: "GoMaster - Go 语言知识平台",
+      name: "Go Master",
+      defaultTitle: "Go Master - Go 语言知识平台",
       shortcutLabel: "Cmd/Ctrl+K",
     },
     sidebar: {
-      homeLabel: "返回 GoMaster 首页",
+      homeLabel: "返回 Go Master 首页",
       search: "搜索内容...",
       shortcutHint: "Cmd/Ctrl+K",
       collapse: "收起侧边栏",
@@ -159,7 +159,7 @@ export const translations: Record<"en" | "zh", TranslationMessages> = {
           desc: "静态类型会在编译阶段提前拦住不少错误，减少上线后的隐患。",
         },
       },
-      pageTitle: "GoMaster - 从入门到高并发，系统学习 Go 语言",
+      pageTitle: "Go Master - 从入门到高并发，系统学习 Go 语言",
     },
     search: {
       placeholder: "搜索主题、语法知识或实战技巧...",
@@ -170,7 +170,7 @@ export const translations: Record<"en" | "zh", TranslationMessages> = {
     topic: {
       endOf: "你已读完",
       unknownCategory: "未分类内容",
-      pageTitle: (topicName: string) => `${topicName} - GoMaster`,
+      pageTitle: (topicName: string) => `${topicName} - Go Master`,
     },
     content: {
       copyCode: "复制代码",

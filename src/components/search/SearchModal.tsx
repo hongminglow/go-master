@@ -29,9 +29,12 @@ export function SearchModal({ isOpen, onClose }: Props) {
       return allTopics[language];
     }
 
-    return allTopics[language].filter((topic) =>
-      topic.name.toLowerCase().includes(normalizedQuery),
-    );
+    const normalizedQueryParts = normalizedQuery.split(" ").filter(Boolean);
+
+    return allTopics[language].filter((topic) => {
+      const searchableText = `${topic.name} ${(topic.tags || []).join(" ")}`.toLowerCase();
+      return normalizedQueryParts.every(part => searchableText.includes(part));
+    });
   }, [debouncedQuery, language]);
 
   useEffect(() => {
