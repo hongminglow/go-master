@@ -2,14 +2,7 @@ import { Link } from "react-router-dom";
 import { categories, allTopics } from "@/data";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { translations } from "@/i18n/translations";
-import {
-  ArrowRight,
-  Code2,
-  Zap,
-  ShieldCheck,
-  Box,
-  Activity,
-} from "lucide-react";
+import { ArrowRight, Zap, ShieldCheck, Box, Activity } from "lucide-react";
 import { CardWrapper } from "@/components/content/CardWrapper";
 
 export function Home() {
@@ -43,8 +36,8 @@ export function Home() {
   return (
     <div className="space-y-16">
       <section className="space-y-6 pt-12 text-center">
-        <div className="mb-4 inline-flex items-center justify-center rounded-full border border-[var(--color-secondary)] bg-[var(--color-primary)] p-4 shadow-xl">
-          <Code2 className="h-16 w-16 text-[var(--color-cta)]" />
+        <div className="mb-4 inline-flex items-center justify-center rounded-full">
+          <img src="/favicon.svg" alt="Go Master" className="h-16 w-16" />
         </div>
 
         <h1 className="text-5xl font-bold tracking-tight text-white/95 md:text-7xl">
