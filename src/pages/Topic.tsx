@@ -22,22 +22,12 @@ export function Topic() {
   return (
     <div className="space-y-8 animate-in fade-in duration-500 max-w-4xl mx-auto">
       <header className="border-b border-[var(--color-secondary)] pb-6">
-        <div className="flex items-center gap-2 text-[var(--color-cta)] text-sm font-bold uppercase tracking-widest mb-4">
-          <span className="opacity-60">
-            {category?.name || t.unknownCategory}
-          </span>
-          <span className="opacity-30">/</span>
-        </div>
         <h1 className="text-4xl md:text-5xl font-extrabold text-white/95 tracking-tight">
           {topic.name}
         </h1>
       </header>
 
       <ContentRenderer sections={topic.content.sections} />
-
-      <footer className="pt-12 border-t border-[var(--color-secondary)] text-center text-[var(--color-text)]/50 text-sm">
-        {t.endOf} {topic.name}
-      </footer>
     </div>
   );
 }

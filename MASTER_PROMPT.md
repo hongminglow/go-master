@@ -8,8 +8,8 @@
 
 When building the application, **you should always** implement the following core features natively:
 
-1. **Collapsible Sidebar**: A category-based navigation sidebar that includes an icon-only collapsed state, and the categories themselves MUST act as accordions to toggle topic visibility.
-2. **Global Fuzzy Search**: A universally accessible Command+K (Cmd+K / Ctrl+K) modal with debounced fuzzy search logic (target 300ms delay) that searches across both topic titles AND arrays of topic `tags`.
+1. **Collapsible Sidebar**: A category-based navigation sidebar that includes an icon-only collapsed state, and the categories themselves MUST act as accordions to toggle topic visibility. When collapsed, clicking a category icon MUST immediately navigate the user to the first topic in that category instead of pointlessly expanding.
+2. **Global Fuzzy Search**: A universally accessible Command+K (Cmd+K / Ctrl+K) modal with debounced fuzzy search logic (target 300ms delay) that searches across both topic titles AND arrays of topic `tags`. Search results MUST be fully styled, showcasing matching topic `tags` beneath the title and rendering the corresponding category's icon next to the result.
 3. **Content-Decoupled Architecture**: Structure the codebase so that data (`/src/data/`) is strictly separated from UI components. Changing text or adding items should NEVER require mutating React components.
 4. **Keyboard-First Navigation**: Map arrows, Enter, and Escape to all search modals and menus.
 5. **Modern Tech Stack**: Utilize React, Tailwind CSS (utility-first, standard config), and standard ecosystem routers (e.g., `react-router-dom`).
@@ -71,7 +71,9 @@ You must ensure the UI feels modern, "wow-factor", and highly professional via t
 - **Text Truncation Tooltips**: For any dynamic text (e.g., user-generated titles or topic names in sidebars), utilize `className="truncate"` defensively. ALWAYS accompany it with a raw `title={data.name}` HTML attribute to guarantee native hover accessibility.
 - **Scrollbars**: Intercept and destroy chunky native browser scrollbars globally in `index.css`. Replace them with thin (e.g., `width: 6px`), elegant, theme-colored translucent scrollbars globally.
 - **Micro-Interactions**: Utilize `transition-all duration-300` (not 200ms) to smoothly animate hover states on buttons, cards, and sidebar items for a premium "heavy" feel.
+- **Adaptive Contrast Laws**: Standard default warning colors (like Red-500 or Green-500 against Red-900/10) often fail contrast checks in heavily tinted themes. Automatically use highly adapted semantic colors—example: using `emerald-950`/`emerald-400` and `rose-950`/`rose-400` in DosDonts components for a dark-red theme so they pop explicitly without washing out.
 - **Spatial Consistency**: Scale icons responsively (e.g., Collapsed sidebar icons: 24px, Expanded list icons: 16px).
+- **Brand Consistency**: Never use generic default icons (like `<Code2>`) as the primary App Icon. Select a shape explicitly relevant to the brand's language (e.g., `<Hexagon>` for Go or Node.js) and inject customized vector code into `favicon.svg` to perfectly match it globally.
 - **Favicon Integrity**: Export standard SVGs. Raw SVG paths should fill the canvas gracefully without artificially injecting solid `<rect>` background plates into the icon.
 
 ## 🚨 Common Pitfalls You MUST Avoid

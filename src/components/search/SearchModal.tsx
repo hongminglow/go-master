@@ -1,11 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, X, FileText } from "lucide-react";
-import { allTopics } from "@/data";
+import { Search, X, FileText, BookOpen, TerminalSquare, Activity, Cpu } from "lucide-react";
+import { allTopics, categories } from "@/data";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { translations } from "@/i18n/translations";
 import { cn } from "@/utils/cn";
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  BookOpen,
+  TerminalSquare,
+  Activity,
+  Cpu,
+};
 
 interface Props {
   isOpen: boolean;
@@ -128,34 +135,50 @@ export function SearchModal({ isOpen, onClose }: Props) {
             </div>
           ) : (
             <div className="flex flex-col gap-1">
-              {results.map((topic, idx) => (
-                <div
-                  key={topic.id}
-                  onClick={() => {
-                    navigate(`/topic/${topic.id}`);
-                    onClose();
-                  }}
-                  onMouseEnter={() => setSelectedIndex(idx)}
-                  className={cn(
-                    "flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors duration-150",
-                    idx === selectedIndex
-                      ? "bg-[var(--color-secondary)] text-[var(--color-cta)]"
-                      : "text-[var(--color-text)]/80 hover:bg-[var(--color-secondary)]/50",
-                  )}
-                >
-                  <FileText
+              {results.map((topic, idx) => {
+                const categoryDef = categories[language].find(c => c.id === topic.categoryId);
+                const Icon = categoryDef ? (iconMap[categoryDef.icon] || FileText) : FileText;
+                
+                return (
+                  <div
+                    key={topic.id}
+                    onClick={() => {
+                      navigate(`/topic/${topic.id}`);
+                      onClose();
+                    }}
+                    onMouseEnter={() => setSelectedIndex(idx)}
                     className={cn(
-                      "h-5 w-5 shrink-0",
+                      "flex cursor-pointer items-start gap-3 rounded-lg p-3 transition-colors duration-150",
                       idx === selectedIndex
-                        ? "text-[var(--color-cta)]"
-                        : "opacity-50",
+                        ? "bg-[var(--color-secondary)] text-[var(--color-cta)]"
+                        : "text-[var(--color-text)]/80 hover:bg-[var(--color-secondary)]/50",
                     )}
-                  />
-                  <span className="truncate font-semibold" title={topic.name}>
-                    {topic.name}
-                  </span>
-                </div>
-              ))}
+                  >
+                    <Icon
+                      className={cn(
+                        "mt-1 h-5 w-5 shrink-0",
+                        idx === selectedIndex
+                          ? "text-[var(--color-cta)]"
+                          : "opacity-50",
+                      )}
+                    />
+                    <div className="flex flex-col gap-1 min-w-0 flex-1">
+                      <span className="truncate font-semibold" title={topic.name}>
+                        {topic.name}
+                      </span>
+                      {topic.tags && topic.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 opacity-80 pointer-events-none">
+                          {topic.tags.map((tag) => (
+                            <span key={tag} className="bg-[var(--color-primary)] px-1.5 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider opacity-70">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

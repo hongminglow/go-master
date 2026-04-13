@@ -19,8 +19,8 @@ export function DosDontsCard({ data }: Props) {
       </h3>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="rounded-xl border border-green-900/30 bg-green-900/10 p-4">
-          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-green-500">
+        <div className="rounded-xl border border-emerald-800 bg-emerald-950/40 p-4">
+          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-emerald-400">
             <CheckCircle2 className="w-5 h-5" />
             {t.dos}
           </h4>
@@ -28,15 +28,15 @@ export function DosDontsCard({ data }: Props) {
           <ul className="space-y-3">
             {data.dos.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2 opacity-90">
-                <span className="mt-1 text-green-500">•</span>
-                <span>{item}</span>
+                <span className="mt-1 text-emerald-400">•</span>
+                <span className="text-emerald-50">{item}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="rounded-xl border border-red-900/30 bg-red-900/10 p-4">
-          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-red-500">
+        <div className="rounded-xl border border-rose-800 bg-rose-950/40 p-4">
+          <h4 className="mb-4 flex items-center gap-2 font-bold uppercase tracking-widest text-rose-400">
             <XCircle className="w-5 h-5" />
             {t.donts}
           </h4>
@@ -44,8 +44,8 @@ export function DosDontsCard({ data }: Props) {
           <ul className="space-y-3">
             {data.donts.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2 opacity-90">
-                <span className="mt-1 text-red-500">•</span>
-                <span>{item}</span>
+                <span className="mt-1 text-rose-400">•</span>
+                <span className="text-rose-50">{item}</span>
               </li>
             ))}
           </ul>

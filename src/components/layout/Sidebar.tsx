@@ -1,5 +1,5 @@
 import { useState, type ComponentType } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { categories, allTopics } from "@/data";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { translations } from "@/i18n/translations";
@@ -7,7 +7,7 @@ import { cn } from "@/utils/cn";
 import {
   ChevronLeft,
   ChevronRight,
-  Code2,
+  Hexagon,
   Search,
   BookOpen,
   TerminalSquare,
@@ -29,8 +29,11 @@ interface Props {
 
 export function Sidebar({ onOpenSearch }: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({});
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>(
+    {},
+  );
   const location = useLocation();
+  const navigate = useNavigate();
   const { language, toggleLanguage } = useLanguageStore();
 
   const toggleCategory = (id: string) => {
@@ -62,7 +65,7 @@ export function Sidebar({ onOpenSearch }: Props) {
             title={sidebarT.homeLabel}
             aria-label={sidebarT.homeLabel}
           >
-            <Code2 className="h-8 w-8 shrink-0" />
+            <img src="./favicon.svg" alt="app-logo" className="size-8 " />
             <span className="truncate">{appT.name}</span>
           </Link>
         ) : (
@@ -72,7 +75,7 @@ export function Sidebar({ onOpenSearch }: Props) {
             title={sidebarT.homeLabel}
             aria-label={sidebarT.homeLabel}
           >
-            <Code2 className="h-8 w-8" />
+            <Hexagon className="h-8 w-8" />
           </Link>
         )}
 
@@ -124,7 +127,7 @@ export function Sidebar({ onOpenSearch }: Props) {
 
       <div className="thin-scrollbar flex-1 space-y-6 overflow-y-auto px-3 py-2">
         {categories[language].map((category) => {
-          const Icon = iconMap[category.icon] || Code2;
+          const Icon = iconMap[category.icon] || Hexagon;
           const categoryTopics = allTopics[language].filter(
             (topic) => topic.categoryId === category.id,
           );
@@ -132,7 +135,16 @@ export function Sidebar({ onOpenSearch }: Props) {
           return (
             <div key={category.id} className="space-y-2">
               <div
-                onClick={() => toggleCategory(category.id)}
+                onClick={() => {
+                  if (isCollapsed) {
+                    const firstTopic = categoryTopics[0];
+                    if (firstTopic) {
+                      navigate(`/topic/${firstTopic.id}`);
+                    }
+                  } else {
+                    toggleCategory(category.id);
+                  }
+                }}
                 className={cn(
                   "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider text-[var(--color-text)]/60 transition-colors hover:text-[var(--color-text)]",
                   isCollapsed && "justify-center",
@@ -185,7 +197,7 @@ export function Sidebar({ onOpenSearch }: Props) {
           type="button"
           onClick={toggleLanguage}
           className={cn(
-            "flex w-full items-center gap-2 rounded-lg p-2 text-[var(--color-text)]/80 transition-colors hover:bg-[var(--color-secondary)] hover:text-[var(--color-text)]",
+            "flex cursor-pointer w-full items-center gap-2 rounded-lg p-2 text-[var(--color-text)]/80 transition-colors hover:bg-[var(--color-secondary)] hover:text-[var(--color-text)]",
             isCollapsed && "justify-center",
           )}
           title={sidebarT.switchLanguage}
