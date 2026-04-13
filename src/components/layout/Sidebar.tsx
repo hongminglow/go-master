@@ -4,6 +4,7 @@ import { categories, allTopics } from "@/data";
 import { useLanguageStore } from "@/store/useLanguageStore";
 import { translations } from "@/i18n/translations";
 import { cn } from "@/utils/cn";
+import { Tooltip } from "@/components/common/Tooltip";
 import {
   ChevronLeft,
   ChevronRight,
@@ -59,24 +60,26 @@ export function Sidebar({ onOpenSearch }: Props) {
     >
       <div className="relative flex items-center justify-between border-b border-[var(--color-secondary)] p-4">
         {!isCollapsed ? (
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-xl font-bold text-[var(--color-cta)] transition-opacity"
-            title={sidebarT.homeLabel}
-            aria-label={sidebarT.homeLabel}
-          >
-            <img src="/favicon.svg" alt="app-logo" className="h-8 w-8 shrink-0" />
-            <span className="truncate">{appT.name}</span>
-          </Link>
+          <Tooltip content={sidebarT.homeLabel}>
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-xl font-bold text-[var(--color-cta)] transition-opacity"
+              aria-label={sidebarT.homeLabel}
+            >
+              <img src="/favicon.svg" alt="app-logo" className="h-8 w-8 shrink-0" />
+              <span className="truncate">{appT.name}</span>
+            </Link>
+          </Tooltip>
         ) : (
-          <Link
-            to="/"
-            className="mx-auto text-[var(--color-cta)]"
-            title={sidebarT.homeLabel}
-            aria-label={sidebarT.homeLabel}
-          >
-            <img src="/favicon.svg" alt="app-logo" className="h-8 w-8" />
-          </Link>
+          <Tooltip content={sidebarT.homeLabel}>
+            <Link
+              to="/"
+              className="mx-auto text-[var(--color-cta)]"
+              aria-label={sidebarT.homeLabel}
+            >
+              <img src="/favicon.svg" alt="app-logo" className="h-8 w-8" />
+            </Link>
+          </Tooltip>
         )}
 
         <button
@@ -137,36 +140,37 @@ export function Sidebar({ onOpenSearch }: Props) {
 
           return (
             <div key={category.id} className="space-y-2">
-              <div
-                onClick={() => {
-                  if (isCollapsed) {
-                    const firstTopic = categoryTopics[0];
-                    if (firstTopic) {
-                      navigate(`/topic/${firstTopic.id}`);
+              <Tooltip content={category.name}>
+                <div
+                  onClick={() => {
+                    if (isCollapsed) {
+                      const firstTopic = categoryTopics[0];
+                      if (firstTopic) {
+                        navigate(`/topic/${firstTopic.id}`);
+                      }
+                    } else {
+                      toggleCategory(category.id);
                     }
-                  } else {
-                    toggleCategory(category.id);
-                  }
-                }}
-                className={cn(
-                  "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[var(--color-text)]",
-                  isCollapsed && "justify-center",
-                  isCollapsed && isActiveCategory ? "text-[var(--color-cta)]" : "text-[var(--color-text)]/60"
-                )}
-                title={category.name}
-              >
-                <Icon
+                  }}
                   className={cn(
-                    "shrink-0",
-                    isCollapsed ? "h-6 w-6" : "h-4 w-4",
+                    "flex cursor-pointer items-center gap-2 px-2 text-sm font-bold uppercase tracking-wider transition-colors hover:text-[var(--color-text)]",
+                    isCollapsed && "justify-center",
+                    isCollapsed && isActiveCategory ? "text-[var(--color-cta)]" : "text-[var(--color-text)]/60"
                   )}
-                />
-                {!isCollapsed && (
-                  <span className="truncate" title={category.name}>
-                    {category.name}
-                  </span>
-                )}
-              </div>
+                >
+                  <Icon
+                    className={cn(
+                      "shrink-0",
+                      isCollapsed ? "h-6 w-6" : "h-4 w-4",
+                    )}
+                  />
+                  {!isCollapsed && (
+                    <span className="truncate">
+                      {category.name}
+                    </span>
+                  )}
+                </div>
+              </Tooltip>
 
               {!isCollapsed && isCategoryOpen(category.id) && (
                 <div className="space-y-1 pl-4">
@@ -174,19 +178,19 @@ export function Sidebar({ onOpenSearch }: Props) {
                     const isActive = location.pathname === `/topic/${topic.id}`;
 
                     return (
-                      <Link
-                        key={topic.id}
-                        to={`/topic/${topic.id}`}
-                        title={topic.name}
-                        className={cn(
-                          "block truncate rounded-lg px-3 py-2 text-sm transition-all duration-300",
-                          isActive
-                            ? "bg-[var(--color-secondary)] font-semibold text-[var(--color-cta)]"
-                            : "text-[var(--color-text)]/80 hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)]",
-                        )}
-                      >
-                        {topic.name}
-                      </Link>
+                      <Tooltip key={topic.id} content={topic.name}>
+                        <Link
+                          to={`/topic/${topic.id}`}
+                          className={cn(
+                            "block truncate rounded-lg px-3 py-2 text-sm transition-all duration-300",
+                            isActive
+                              ? "bg-[var(--color-secondary)] font-semibold text-[var(--color-cta)]"
+                              : "text-[var(--color-text)]/80 hover:bg-[var(--color-secondary)]/50 hover:text-[var(--color-text)]",
+                          )}
+                        >
+                          {topic.name}
+                        </Link>
+                      </Tooltip>
                     );
                   })}
                 </div>
